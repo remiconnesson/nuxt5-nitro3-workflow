@@ -39,6 +39,22 @@ npx workflow inspect run <id>    # details for one run
 npx workflow web                 # open the dashboard
 ```
 
+### First-deploy-on-a-lane fails — redeploy once
+
+The very first deploy on each environment lane (preview, production) fails
+`POST /api/workflow` with:
+
+```
+SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+  at JSON.parse ... at readAllBytes (undici)
+```
+
+That's the workflow runtime hitting a 404 HTML page from Vercel Queues
+before the per-environment topic is provisioned. The broken first deploy
+never self-heals — but every subsequent deploy on the same lane works
+because the topic is now in place. **Fix: just redeploy.** After that the
+lane stays healthy.
+
 ## Version pinning — read this before touching `package.json`
 
 - `nuxt` is aliased to `nuxt-nightly` via the `5x` dist-tag:
