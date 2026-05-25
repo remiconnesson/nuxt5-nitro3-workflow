@@ -2,4 +2,5 @@
 export default defineNuxtConfig({
   compatibilityDate: '2026-05-25',
   devtools: { enabled: true },
+  modules: ['workflow/nuxt'],
 })
